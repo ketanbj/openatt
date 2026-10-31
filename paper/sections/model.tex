@@ -1,0 +1,46 @@
+\section{Problem and Threat Model}
+\subsection{A reporting controller, not a human identity}
+The example action records fixture contact in a local ledger. A controller owns
+an Ed25519 key and can access a force/time acquisition process. The owner signer
+separately delegates this exact recording action. The action is deliberately not
+a door unlock or package release: those require independent actuator enforcement
+and may require a stronger human authorization ceremony.
+
+The report authenticates a configured controller's assertion about its trace.
+Physical association, correct calibration, trustworthy analog sensing and capture
+after the challenge are assumptions of the acquisition process. The SDK accepts
+bounded samples; signing an arbitrary existing CSV file does not prove that those
+samples were newly collected. We expose this limitation rather than equating
+fresh signature response with fresh physical contact.
+\subsection{Exact actions and separate permission}
+An action is an immutable snapshot of principal, operation, resource, purpose and
+all tool arguments. Let $h(a)$ be its SHA-256 digest under the bounded local JSON
+profile. A stored challenge includes $h(a)$, business audience, modality, a random
+128-bit nonce, a random 128-bit session identifier, issue time and expiration.
+The default lifetime is 30 seconds and the maximum is 120 seconds. The signed
+response must match the complete server-stored challenge, not just a caller's
+claim that a nonce was once issued.
+
+A different configured owner key signs a one-use grant containing the principal,
+audience, $h(a)$, allowed modalities and a bounded validity interval. An attester
+key cannot substitute for that grant. Registration stores the token digest;
+re-registration never resets revocation or consumed state. These are demo
+administrative roles: the implementation does not establish legal identity,
+verified account enrollment, a human consent ceremony or a hardware root of trust.
+
+\subsection{Adversary and assumptions}
+An attacker may alter untrusted observations, replay evidence, obtain a legitimate
+key of its own, substitute any action field, relay a live exchange and schedule
+concurrent requests or revocation. The verifier code, configured key maps,
+owner signer, gateway clock and local database administrator are trusted.
+The configured attester is trusted to report within its documented capture
+assumptions. A compromised attester may sign a false observation for a fresh
+challenge. We include this limitation rather than treating signature validity as
+sensor truth.
+
+The language model, if a future integration includes one, does not select its own
+trusted keys, change the action contract, create an owner signature or bypass the
+gate. The released benchmark contains no language model. It measures structured
+protocol behavior, not resistance to arbitrary prompt injection or leaks through
+other tools and outputs.
+

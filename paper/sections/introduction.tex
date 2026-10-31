@@ -1,0 +1,31 @@
+\section{Introduction}
+An agent operating through a human-facing fixture can observe a button press,
+contact event or haptic response. These observations are useful, but the inference
+from ``contact happened'' to ``the authorized customer agreed'' is unjustified.
+A controller can report a force pattern without identifying the toucher or
+establishing willingness. A signed packet does not repair an untrusted sensor
+path or make an old raw trace a fresh physical interaction.
+
+OpenATT (Open Agent Tactile Trust) implements scoped controller evidence and
+keeps it separate from permission. A stored challenge defines a short/long
+contact pattern. A configured controller signs a bounded force/time trace and
+the exact challenge. The verifier reprocesses the signal and checks binding,
+current owner permission and required guarantees before creating one durable
+local receipt. Contact reports never supply human consent or proximity.
+
+This report provides concrete CSV acquisition, integer-unit signal processing,
+controller signing, a shared transaction gate, attack cases and generated-trace
+benchmarks. It does not report hardware sensing, human authentication, haptic
+actuation or physical deployment. That distinction matters because the strongest
+assumption is the trustworthy sensor-to-signing path, which the software profile
+cannot create on its own.
+
+\paragraph{Supported contribution.}
+The artifact makes contact/consent separation and short-pattern limitations
+executable. It supplies negative results: increased noise and timing variation
+reduce acceptance, and an eight-bit pattern admits collisions across different
+challenges. Signatures, hysteresis and database transactions are established
+techniques. The equally expressive typed control matches the observed serial
+policy behavior; no stronger authorization property or formal proof is claimed.
+Research on sound composition and efficient evidence acquisition remains ahead.
+

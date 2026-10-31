@@ -14,7 +14,7 @@ def fixture(tmp_path):
     gateway = Gateway(
         str(tmp_path / "state.sqlite3"),
         audience="backend",
-        attesters={"controller": controller.public_key},
+        attesters={"tactile": {"controller": controller.public_key}},
         delegators={"owner": owner.public_key},
         clock=lambda: 1000,
     )

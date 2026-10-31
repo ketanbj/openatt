@@ -5,10 +5,15 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "openatt"
 version = "0.1.0"
+readme = "README.md"
+license-files = ["LICENSE"]
 description = "Experimental challenge-bound controller reports for tactile agent interactions"
 requires-python = ">=3.11"
 license = "Apache-2.0"
 dependencies = ["open-modality-trust-core==0.1.0"]
+
+[project.optional-dependencies]
+benchmark = ["matplotlib>=3.9,<4"]
 
 [project.scripts]
 openatt = "openatt.cli:main"

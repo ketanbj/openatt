@@ -28,7 +28,7 @@ python -m openatt demo --output openatt/output/demo
 In a recursive umbrella checkout, use `core` and `modalities/openatt` instead.
 The shared `open-modality-trust-core` package must come from that checkout; no
 PyPI publication is asserted. No API key, cloud account or hardware is required.
-The demo creates a generated force/time CSV and protected local receipt. Keys are ephemeral.
+The demo creates a generated force/time CSV and durable local receipt. Keys are ephemeral.
 
 ## How it works
 
@@ -57,7 +57,7 @@ python openatt/scripts/benchmark.py --trials 20
 - [Architecture and protocol](docs/architecture.md)
 - [Threat model and limits](docs/threat-model.md)
 - [Integration example](examples/workflow.py)
-- [Benchmark method and results](docs/benchmarks/README.md)
+- [Benchmark method and results](docs/benchmarks/README.md) and [measured environment](docs/benchmarks/environment.json)
 - [Research positioning](docs/novelty.md)
 - [Paper and reproduction](paper/README.md)
 
