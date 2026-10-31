@@ -1,10 +1,7 @@
-# Open Agent Tactile Trust: design boundaries
+# Design status
 
-Planned work covers signed controller reports, contact/haptic challenges and the distinction between contact and consent.
+The original design scaffold is implemented as a bounded local prototype.
+See [architecture](architecture.md), [threat model](threat-model.md),
+[novelty boundaries](novelty.md), and [benchmarks](benchmarks/README.md).
 
-A signed sensor report identifies a reporting controller under configured trust. It does not establish the toucher's identity, intention or human consent.
-
-The adapter should produce explicitly scoped evidence records, not an unrestricted
-trust flag. A future verifier must independently appraise proofs, scope,
-freshness and assumptions. The language model cannot grant itself authority.
-Implementation choices and proof formats remain open research questions.
+A signed controller report does not prove sensor truth, toucher identity, human intent, consent, proximity or safe actuation.
