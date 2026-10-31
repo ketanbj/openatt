@@ -4,5 +4,9 @@
   "modality": "tactile",
   "status": "experimental-simulated-fixture",
   "implemented": true,
-  "adapter_contract": "https://github.com/ketanbj/open-modality-trust/blob/main/spec/adapter-contract.md"
+  "adapter_contract": "https://github.com/ketanbj/open-modality-trust/blob/main/spec/adapter-contract.md",
+  "runtime_profile": "https://github.com/ketanbj/open-modality-trust/blob/main/spec/local-profile.md",
+  "documentation": "docs/README.md",
+  "agent_instructions": "AGENTS.md",
+  "code_map": "docs/code-map.md"
 }

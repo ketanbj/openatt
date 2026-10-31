@@ -11,13 +11,23 @@ prior work, trust boundaries, implementation, measured evidence and future work.
 - `openatt.pdf`: compiled and visually inspected review copy.
 - `usenix.sty`: unchanged style copied from OpenAVT's official USENIX Security 2027 template artifact. Its use does not imply venue readiness.
 
+Run from this repository root, after installing the local core and optional
+benchmark dependencies:
+
 ```sh
-python openatt/scripts/report.py
-cd openatt/paper
-make pdf TECTONIC=/path/to/tectonic PYTHON=/path/to/python
+make install-benchmark
+make paper TECTONIC=/path/to/tectonic
 ```
 
-Run the benchmark first to collect new measurements. `scripts/verify_evidence.py`
+This rebuilds tracked tables, plots and the reviewed-copy path. Follow the
+[publication workflow](../docs/development.md#update-publication-artifacts-deliberately)
+to inspect the resulting PDF and refresh its actual build hashes/review record.
+A compile alone does not establish a new reviewed artifact.
+
+
+The paper uses the recorded canonical report. New exploratory benchmark output
+is not selected automatically; follow the development guide for a deliberate
+publication evidence update. `scripts/verify_evidence.py`
 checks that recorded measurements match the current measured source files.
 Generated-image/trace trials are local and synthetic; no hardware, LLM evaluation,
 physical relay, external interoperability, formal proof or new cryptography is

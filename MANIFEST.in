@@ -1,8 +1,11 @@
 include README.md LICENSE
-recursive-include tests *.py
+recursive-include tests *.py *.md
 include project.json
 recursive-include docs *.md *.json
 recursive-include scripts *.py
 recursive-include examples *.py *.md
-recursive-include paper *.tex *.bib *.sty *.pdf *.md Makefile
+recursive-include paper *.tex *.bib *.sty *.pdf *.png *.json *.md Makefile
 recursive-include examples/fixtures *.json *.png *.csv *.md
+
+include AGENTS.md CONTRIBUTING.md Makefile
+recursive-include .github/workflows *.yml
