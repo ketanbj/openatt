@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "project": "openatt",
+  "modality": "tactile",
+  "status": "exploratory-scaffold",
+  "implemented": false,
+  "adapter_contract": "https://github.com/ketanbj/open-modality-trust/blob/main/spec/adapter-contract.md"
+}
