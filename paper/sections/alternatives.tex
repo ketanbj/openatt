@@ -1,0 +1,29 @@
+\section{Alternatives and Research Position}
+Touch and haptic authentication have a substantial history. TouchIn combines
+knowledge of a gesture with behavioral and physiological features~\cite{touchin}.
+Recent tele-robotic work uses force-feedback dynamics for user
+identification~\cite{haptic}. OpenATT is neither a biometric classifier nor a
+competitor to their user-identification accuracy; it has no participant dataset.
+Its pattern is public and contains only eight bits, so it is not an identity
+secret.
+
+WebAuthn separately specifies user-presence and user-verification checks and
+relying-party validation~\cite{webauthn}. An arbitrary force threshold or
+controller signature does not instantiate that ceremony. A trusted authorization
+flow can supply permission; a tactile event can supply a distinct reported
+observation. Combining them must preserve their meanings.
+
+RATS separates evidence from appraisal~\cite{rats}. Analog sensor-injection
+research such as WALNUT demonstrates that digital processing can begin with
+adversarial physical inputs~\cite{walnut}; a signature downstream cannot establish
+the integrity of that upstream physical measurement. CaMeL and Fides enforce
+control/data-flow policies around agents~\cite{camel,fides}. OpenATT uses a
+trusted action gate but does not implement their planners, prove their properties
+or reproduce their agent evaluation.
+
+Accordingly, signed controller reports and exact grants are engineering
+foundations. The prospective scientific question is whether a common evidence
+contract can preserve non-equivalent guarantees across changing perceptual
+contexts and acquire adequate support at lower cost. The current work supplies
+an inspectable tactile boundary and limitations, not that general result.
+

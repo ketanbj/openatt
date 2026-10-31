@@ -1,6 +1,10 @@
-# Example roadmap
+# Runnable example
 
-Begin with synthetic contact-report traces, then a bounded pressure/contact
-sensor fixture driven by a trusted controller. A press or haptic response must
-not automatically authorize an action as human approval. These are planned
-examples, not runnable demos or a general robot safety system.
+`workflow.py` exercises the public OPENATT SDK and shared gateway.
+Run from the repository family after installing the local packages:
+
+```sh
+python openatt/examples/workflow.py
+```
+
+Inputs are generated local fixtures, not hardware or a production customer flow.

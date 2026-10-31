@@ -1,0 +1,35 @@
+\documentclass[letterpaper,twocolumn,10pt]{article}
+\usepackage{iftex}
+\ifXeTeX
+  \makeatletter
+  \@namedef{ver@breakurl.sty}{2026/10/30 Native XeTeX URL handling}
+  \makeatother
+\fi
+\usepackage{hyperref}
+\usepackage{usenix}
+\usepackage{xurl}
+\ifXeTeX
+  \microtypesetup{spacing=false,kerning=false}
+\fi
+\usepackage{amsmath,amssymb,booktabs,tabularx,graphicx}
+\input{artifacts/measurements}
+\title{OpenATT: Scoped Controller Evidence Without Promoting Contact to Consent}
+\author{Research draft\\Authorship to be finalized}
+\date{October 31, 2026}
+\begin{document}
+\raggedbottom
+\maketitle
+\begin{abstract}
+Tactile observations do not automatically identify a consenting person or authorize an agent action. We present OpenATT, a local Python reference for bounded force/time acquisition, challenge-dependent contact-pattern appraisal, signed controller reports and separate exact-action permission. A shared verifier atomically consumes evidence context and grants with a local receipt. Generated-trace benchmarks expose sensitivity to noise and timing, and an explicit short-code experiment records old traces matching new patterns. Finite policy cases and concurrent duplicate schedules exercise the enforcement boundary; an equally expressive typed control matches serial outcomes. No hardware sensing, user authentication, physical actuation, general composition theorem or novel cryptography is claimed. The artifact makes those distinctions executable and identifies the capture assumptions a real fixture must justify.
+\end{abstract}
+\input{sections/introduction}
+\input{sections/model}
+\input{sections/alternatives}
+\input{sections/design}
+\input{sections/evaluation}
+\input{sections/discussion}
+\bibliographystyle{plainurl}
+\bibliography{references}
+\appendix
+\input{sections/appendix}
+\end{document}

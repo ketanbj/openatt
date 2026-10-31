@@ -1,0 +1,76 @@
+\section{Design and Implementation}
+\subsection{Bounded trace and contact segmentation}
+Samples are pairs of integer milliseconds and millinewtons. The profile accepts
+10--512 samples over at most five seconds. Acquisition begins at relative time
+zero; timestamps must strictly increase with gaps no larger than 20 ms. Force
+must lie between zero and 20,000 mN. CSV has exactly the header
+\texttt{time\_ms,force\_mn}; files are bounded to 64 KiB. CSV alone has no
+cryptographic authenticity.
+
+A hysteretic segmenter begins contact at 500 mN and ends it at 200 mN. Contacts
+shorter than 40 ms, traces ending during contact, malformed timestamps and
+acquisition gaps are rejected. These are explicit fixture settings, not
+calibrated physiological or hardware thresholds. The verifier repeats the
+segmenter rather than trusting controller-supplied contact labels.
+
+\subsection{Public short/long challenge pattern}
+SHA-256 of the complete challenge supplies eight pattern bits. Each bit selects
+a 100 or 200 ms contact; intended gaps are 100 ms. Verification allows duration
+error of at most 20 ms and gaps of 80--120 ms, including the initial gap. The
+profile requires exactly eight contacts. The response signs the complete
+challenge, resource name, profile and raw bounded samples.
+
+The pattern has just $2^8=256$ possible values. It is an acquisition-consistency
+check, not a secret, distance bound or cryptographic nonce. An old trace may match
+a new code. A compromised controller can generate a matching trace directly.
+The full signed 128-bit nonce/session prevents transplanting an old signed
+response, under the configured-key assumption, but does not prove new physical
+capture if the controller signs stale samples. This is why the reported-contact
+guarantee retains its explicit trusted sensor-path assumption.
+
+The simulator emits 10 ms samples at nominal 1,000 mN contact force, with bounded
+uniform force noise and contact-duration jitter. These functions generate test
+fixtures; the package does not label them sensor recordings or assume a real
+controller follows them. A real acquisition adapter must maintain the documented
+capture ordering and protect the sensor-to-signing path.
+\subsection{Acceptance and transaction boundary}
+For evidence $e$, grant $g$ and action $a$, the intended rule is
+\begin{align}
+\mathsf{Receipt}(a) \Rightarrow {}& \mathsf{SignatureValid}(e) \nonumber\\
+ &\land\ \mathsf{ChallengeStoredAndUnused}(e,h(a)) \nonumber\\
+ &\land\ \mathsf{ScopeAndTimeValid}(g,a) \nonumber\\
+ &\land\ \mathsf{Supported}(e,\mathsf{Contract}(a)) \nonumber\\
+ &\land\ \mathsf{CurrentAndUnused}(g).
+\end{align}
+This is a design invariant supported by finite tests, not a mechanized proof.
+The gateway derives supported guarantees from its own validators. A signed
+adapter field such as \texttt{trusted=true} is rejected as an unknown field.
+Unsupported requirements such as physical proximity or human consent cannot be
+supplied by relabeling a valid signature.
+
+Cryptographic and modality appraisal precede a SQLite \texttt{BEGIN IMMEDIATE}
+transaction. After acquiring the write lock, the gateway rechecks time, issuer
+revocation, complete stored challenge and grant state. Receipt insertion and
+challenge/grant consumption then commit together. An insertion failure rolls
+back consumption; restarts retain replay state. Revocation committed before this
+boundary prevents a later receipt. Revocation after an already committed receipt
+cannot undo history.
+
+The sole effect is an append to this local receipt ledger. There is no callback
+that silently sends a remote command inside this claim. A payment, actuator,
+message, downstream database or later physical event needs its own participating
+commit semantics. The usual database transaction is an implementation foundation,
+not a novel consistency mechanism.
+
+\subsection{Bounded parsing and role separation}
+The shared package signs a versioned kind/issuer/body envelope using
+domain-separated Ed25519~\cite{eddsa}. The local JSON profile permits bounded
+integers, strings, arrays, objects, booleans and null, with sorted ASCII-escaped
+keys and fixed separators. It rejects duplicate keys, floats, nonfinite values,
+excessive nesting, large messages, unknown fields and boolean timestamps. The
+maximum encoded message is 32 KiB. These choices reduce parser ambiguity; they
+are not JOSE, COSE, RFC 8785 or compatibility with the umbrella's draft schema.
+Evidence trust maps are scoped by modality; a display key cannot act as a
+controller without explicit configuration. The private keys never appear in released reports. Evidence is signed, not
+encrypted; public claims and tactile traces must not contain secrets.
+

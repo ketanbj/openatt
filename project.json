@@ -2,7 +2,7 @@
   "schema_version": 1,
   "project": "openatt",
   "modality": "tactile",
-  "status": "exploratory-scaffold",
-  "implemented": false,
+  "status": "experimental-simulated-fixture",
+  "implemented": true,
   "adapter_contract": "https://github.com/ketanbj/open-modality-trust/blob/main/spec/adapter-contract.md"
 }

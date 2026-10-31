@@ -1,0 +1,32 @@
+\section{Discussion and Next Steps}
+\paragraph{Contact evidence has a small meaning.}
+A valid report means that a configured controller signed samples satisfying a
+known fixture profile for this interaction, under its sensor-path assumptions.
+It cannot tell whether a person, robot, prerecorded trace or malicious firmware
+produced them. No amount of relabeling makes this equivalent to consent. A
+contract requiring an unsupported guarantee must deny the action, even when
+every reported contact matches.
+
+\paragraph{Stronger primitives are complementary.}
+Protected sensor firmware, attestation, authenticated acquisition, calibrated
+hardware and a user-approved transaction can justify additional claims. Those
+claims need their own evidence and failure analysis. They should not be inferred
+from a longer contact pattern alone. A deployment may not need tactile evidence
+at all when a trusted API and appropriate consent flow already authorize the
+exact action.
+
+\paragraph{What remains research.}
+The shared core checks one modality per receipt. It is not yet a composition
+calculus, dependency invalidation engine or selective acquisition planner. OpenAVT
+remains an independent voice implementation. OpenAST's fresh display response and
+OpenATT's contact report cannot be substituted merely because both are signed.
+Future handoffs must preserve resource, purpose, episode, assumptions and
+supporting dependencies. A useful scientific result would establish that rule
+or reduce acquisition/intervention cost without weakening the strongest policy
+control. The present implementation demonstrates neither advantage.
+
+The practical next step is a bounded hardware fixture with authenticated capture
+ordering, protected signing keys and a cooperating backend. Human studies and
+hazardous actuation are unnecessary for the current negative-result reference;
+any later consent or usability claims need an appropriate study design.
+
