@@ -1,74 +1,97 @@
 # OPENATT: Open Agent Tactile Trust
 
-**Signed controller reports with bounded contact-pattern appraisal.**
+**A signed contact report with a clear boundary between touch and permission.**
 
-An agent may decode a legitimate display or receive a controller contact report
-and still lack permission for the action it proposes. OPENATT preserves
-that distinction using explicitly scoped observations and separate customer
-permission, enforced outside any language model.
+An assistant receives a button-contact report. OpenATT lets a configured
+controller sign bounded force/time samples for an exact interaction. A separate
+owner grant supplies permission; contact itself cannot approve the action.
 
-## Status
+[Documentation map](docs/README.md) · [Code map](docs/code-map.md) ·
+[Development](docs/development.md) · [Agent guide](AGENTS.md)
 
-Experimental local Python implementation, with runnable demos, tests, reproducible
-benchmarks and a research paper draft. CSV acquisition and signal processing are implemented. The released force traces are generated simulations; no sensor hardware or human study has been evaluated.
+## What works today
 
-A signed controller report does not prove sensor truth, toucher identity, human intent, consent, proximity or safe actuation.
+Bounded CSV acquisition, integer force/time processing, contact segmentation,
+challenge-pattern appraisal, signed controller reports and shared permission/local
+receipt enforcement.
+The prototype ends by writing a **local receipt**: a database record of an
+accepted request. Remote business actions and actuators need their own
+participating effect boundary.
 
-## Run
+The released traces are generated simulations. Sensor truth, capture ordering,
+toucher identity, human consent and proximity require additional justified
+evidence/assumptions. No physical sensor or LLM agent study was performed.
 
-Requires Python 3.11+. From a parent folder containing the three repositories:
+## Run from this repository root
+
+Requires Python 3.11+. The shared core source must be available in the umbrella
+checkout. If you cloned this repository independently, place the umbrella beside
+it, or pass its core path explicitly. Skip the following clone if it already exists:
 
 ```sh
-python -m venv .venv
+git clone https://github.com/ketanbj/open-modality-trust.git ../open-modality-trust
+```
+
+Then, from **this repository root**:
+
+```sh
+python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install -e open-modality-trust/core -e openatt
-python -m openatt demo --output openatt/output/demo
+make install
+make demo
+make check
 ```
 
-In a recursive umbrella checkout, use `core` and `modalities/openatt` instead.
-The shared `open-modality-trust-core` package must come from that checkout; no
-PyPI publication is asserted. No API key, cloud account or hardware is required.
-The demo creates a generated force/time CSV and durable local receipt. Keys are ephemeral.
+The installer detects sibling and recursive-umbrella layouts. For any other
+layout, use `make install CORE=/absolute/path/to/core`. All packages come from
+local source; no PyPI publication is asserted. The demo uses generated inputs and
+ephemeral keys, with no API key, cloud account or hardware.
 
-## How it works
+The [development guide](docs/development.md) includes direct Python commands if
+you do not use Make, plus setup and troubleshooting for both checkout layouts.
 
-1. A verifier stores a random challenge bound to the exact principal, action,
-   resource, purpose and every argument.
-2. A configured controller signs a bounded force trace for a challenge-derived short/long contact sequence. The verifier recomputes segmentation and pattern matching.
-3. A separate owner signer grants permission for the exact action, audience and
-   modality. The modality signature itself supplies no permission.
-4. The gateway checks current permission, supported guarantees and explicit
-   assumptions, then atomically consumes the challenge/grant and inserts a local
-   ledger receipt in one SQLite transaction.
+## Understand the path to a permitted receipt
 
-The receipt is the only implemented effect. A later HTTP call or physical actuator
-is outside this atomicity claim. Evidence is signed, not encrypted; do not place
-secrets in public markers or traces. Ordinary scene text and arbitrary tactile
-reports remain untrusted.
+1. The verifier stores a fresh challenge for the exact principal, action,
+   resource, purpose and arguments.
+2. A configured controller signs the challenge and bounded force trace; the verifier recomputes the contact pattern.
+3. A separate owner key issues a grant for that action and business audience.
+4. The shared gateway checks supported guarantees, current permission, expiry,
+   revocation and one-use state before committing the receipt in one transaction.
 
-## Validate and reproduce
+Inspecting CSV returns contact segments; it does not authenticate the capture.
 
 ```sh
-python -m pip install pytest ruff 
-python -m pytest openatt/tests
-python openatt/scripts/benchmark.py --trials 20
+python -m openatt inspect examples/fixtures/generated-trace.csv
 ```
 
-- [Architecture and protocol](docs/architecture.md)
-- [Threat model and limits](docs/threat-model.md)
-- [Integration example](examples/workflow.py)
-- [Benchmark method and results](docs/benchmarks/README.md) and [measured environment](docs/benchmarks/environment.json)
-- [Research positioning](docs/novelty.md)
-- [Paper and reproduction](paper/README.md)
+The signed [public fixture](examples/fixtures/README.md) is synthetic and separate
+from measured benchmark trials. Its public key is a fixture verification key,
+not a production trust root. The [SDK example](examples/workflow.py) shows how
+observation signing, owner permission and the gateway fit together.
 
-## Research contribution
+## Inspect and reproduce evidence
 
-This is a concrete research reference, not a claim that signatures, visual
-authentication, contact patterns or transactional authorization are new.
-The benchmarks compare an intentionally weak signature-only check with an equally
-expressive sequential typed-policy control. No advantage over that stronger
-control, formal proof, IFC implementation, LLM resistance, external interoperability
-or physical deployment is claimed. Cross-modal composition and efficient evidence
-acquisition remain questions for the broader OpenModalityTrust project.
+- [Recorded benchmarks](docs/benchmarks/README.md): raw results, controls and failures.
+- [Measured environment](docs/benchmarks/environment.json): versions for the recorded run.
+- [Architecture](docs/architecture.md) and [threat model](docs/threat-model.md): exact scope and assumptions.
+- [Research position](docs/novelty.md) and [paper guide](paper/README.md): prior work and manuscript sources.
 
-Apache-2.0. Generated fixtures contain no people, customer records or recordings.
+```sh
+make install-benchmark
+make benchmark TRIALS=20 OUT=output/benchmark/new-run.json
+make verify-evidence
+```
+
+New exploratory runs go to ignored output paths. `verify-evidence` checks the
+recorded report and measured source files. The [publication workflow](docs/development.md#update-publication-artifacts-deliberately)
+explains deliberate updates to recorded tables, plots and reviewed PDFs.
+
+The sequential reference checker with the same policy matches the recorded
+permission decisions. These local results establish an inspectable experimental
+reference, with explicit limits. Signatures, visual/haptic authentication and
+transactions are established techniques; broader composition and acquisition
+benefits remain research, not measured advantages of this prototype.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) to make changes. Code is Apache-2.0;
+fixtures contain no people, customer records or private keys.
